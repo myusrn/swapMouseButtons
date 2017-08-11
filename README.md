@@ -39,6 +39,9 @@ shortcut link or non-elevated command prompt.
 
 3. "SwapMouseButton win32 api" -> 
 - https://msdn.microsoft.com/en-us/library/ms646264(VS.85).aspx  
+
+4. "windows user access control elevation request api" -> 
+- https://stackoverflow.com/questions/17533/request-windows-vista-uac-elevation-if-path-is-protected
  
-4. "which open source license should i use" -> 
+5. "which open source license should i use" -> 
 - https://whichopensourcelicense.com/  
