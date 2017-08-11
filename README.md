@@ -20,6 +20,11 @@ Calling SwapMouseButton win32 api changes what is currently in effect but does
 not change the registry setting. So that needs to be modified as well otherwise
 the next time you open and close mouse settings control panel, main.cpl, the
 setting will revert to what the registry setting is configured to be.
+
+TODO: Figure out how to popup the "User Access Control" dialog that you see 
+when you execute regedit.exe from a non-elevated command prompt. This will 
+allow swap of mouse buttons setting to be persisted when executed from desktop 
+shortcut link or non-elevated command prompt.
 &nbsp;  
 
 ---
