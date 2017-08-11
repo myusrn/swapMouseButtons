@@ -25,9 +25,9 @@ namespace SwapMouseButton
             //Console.WriteLine("Hello World!");
 
             // implementation if you just want to set mouse button settings to left handed if 
-            // no arguments are found and set to right handed if /u argument included
-            //if (args.Length > 0 && String.Compare(args[0], "/u", true) == 0) SwapMouseButton(0);
-            //else SwapMouseButton(1);
+            // no arguments or argument "/r" found and right handed if "/l" argument found
+            //if (args.Length > 0 && String.Compare(args[0], "/r", true) == 0) SetMouseButtonsSetting(MouseButtonsSetting.RightHanded);
+            //if (args.Length > 0 && String.Compare(args[0], "/l", true) == 0) SetMouseButtonsSetting(MouseButtonsSetting.LeftHanded);
 
             // implementation if you want to always swap mouse button settings from current state
             var currentSetting = GetMouseButtonsSetting();
