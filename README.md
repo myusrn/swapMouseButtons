@@ -24,7 +24,9 @@ setting will revert to what the registry setting is configured to be.
 TODO: Figure out how to popup the "User Access Control" dialog that you see 
 when you execute regedit.exe from a non-elevated command prompt. This will 
 allow swap of mouse buttons setting to be persisted when executed from desktop 
-shortcut link or non-elevated command prompt.
+shortcut link or non-elevated command prompt.  Tried adding an App.manifest
+file with declarative settings and configuring it to build as an embedded
+resource but that appeared to make no difference.
 &nbsp;  
 
 ---

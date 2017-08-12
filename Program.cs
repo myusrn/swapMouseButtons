@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SwapMouseButton
@@ -24,16 +26,27 @@ namespace SwapMouseButton
         {
             //Console.WriteLine("Hello World!");
 
-            // implementation if you just want to set mouse button settings to left handed if 
-            // no arguments or argument "/r" found and right handed if "/l" argument found
-            //if (args.Length > 0 && String.Compare(args[0], "/r", true) == 0) SetMouseButtonsSetting(MouseButtonsSetting.RightHanded);
-            //if (args.Length > 0 && String.Compare(args[0], "/l", true) == 0) SetMouseButtonsSetting(MouseButtonsSetting.LeftHanded);
-
-            // implementation if you want to always swap mouse button settings from current state
-            var currentSetting = GetMouseButtonsSetting();
-
-            if (currentSetting == MouseButtonsSetting.RightHanded) SetMouseButtonsSetting(MouseButtonsSetting.LeftHanded);
-            else /* (currentSetting == MouseButtonSettings.LeftHanded) */ SetMouseButtonsSetting(MouseButtonsSetting.RightHanded);
+            if (args.Length > 0 && (Regex.IsMatch(args[0], @"[-/][\?h]") || Regex.IsMatch(args[0], @"/[^lr]")))
+            {
+                // pattern @"[-/][\?h]" can also be written as @"(-|/)(\?|h)"
+                ShowUsage();
+            }
+            else if (args.Length > 0 && String.Compare(args[0], "/l", true) == 0)
+            {
+                // set to left handed regardless of current persisted and runtime state
+                SetMouseButtonsSetting(MouseButtonsSetting.LeftHanded);
+            }
+            else if (args.Length > 0 && String.Compare(args[0], "/r", true) == 0)
+            {
+                // set to right handed regardless of current persisted and runtime state
+                SetMouseButtonsSetting(MouseButtonsSetting.RightHanded);
+            }
+            else // lookup current persisted setting, no runtime setting lookup option, and swap it
+            {
+                var currentSetting = GetMouseButtonsSetting();
+                if (currentSetting == MouseButtonsSetting.RightHanded) SetMouseButtonsSetting(MouseButtonsSetting.LeftHanded);
+                else /* (currentSetting == MouseButtonSettings.LeftHanded) */ SetMouseButtonsSetting(MouseButtonsSetting.RightHanded);
+            }
         }
 
         /// <summary>
@@ -64,21 +77,46 @@ namespace SwapMouseButton
             using (RegistryKey key = Registry.CurrentUser.OpenSubKey("Control Panel\\Mouse"))
             {
                 if (key is null) throw new ApplicationException("unable to open mouse settings registry key");
-                if (mouseButtonsSetting == MouseButtonsSetting.RightHanded)
-                {
-                    SwapMouseButton(false); // change runtime setting
-                    try { key.SetValue("SwapMouseButtons", "0", RegistryValueKind.String); } // change persisted setting
-                    catch (UnauthorizedAccessException) { Console.WriteLine(
-                        "unable to persist change execute from \"run as administrator\" environment"); }
-                }
-                else /* (mouseButtonsSetting == MouseButtonSettings.LeftHanded) */
+                if (mouseButtonsSetting == MouseButtonsSetting.LeftHanded)
                 {
                     SwapMouseButton(true); // change runtime setting
                     try { key.SetValue("SwapMouseButtons", "1", RegistryValueKind.String); } // change persisted setting
                     catch (UnauthorizedAccessException) { Console.WriteLine(
                         "unable to persist change execute from \"run as administrator\" environment"); }
                 }
+                else /* (mouseButtonsSetting == MouseButtonSettings.RightHanded) */
+                {
+                    SwapMouseButton(false); // change runtime setting
+                    try { key.SetValue("SwapMouseButtons", "0", RegistryValueKind.String); } // change persisted setting
+                    catch (UnauthorizedAccessException) { Console.WriteLine(
+                        "unable to persist change execute from \"run as administrator\" environment"); }
+                }
             }
+        }
+
+        static void ShowUsage()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            var asmVersion = asm.GetName().Version.ToString();
+            var asmName = Regex.Match(Environment.CommandLine, @"[^\\]+(?:\.exe)", RegexOptions.IgnoreCase).Value;
+
+            const string Status = "in progress"; const string Version = "12aug17";
+            //Console.WriteLine("\nstatus = " + Status + ", version = " + Version + "\n");  
+            Console.WriteLine("\nversion = " + Version + "\n");
+            Console.WriteLine("description");
+            Console.WriteLine("  command line utility to switch primary and secondary mouse buttons\n");
+            Console.WriteLine("usage");
+            Console.WriteLine("  " + asmName + " [/l | /r | /h]\n");
+            Console.WriteLine("where");
+            Console.WriteLine("     = no arguments swaps whatever currently persisted setting is");
+            Console.WriteLine("  /l = switches to left handed regardless of current setting");
+            Console.WriteLine("  /r = switches to right handed regardless of current setting");
+            Console.WriteLine("  /h = [ | /? | unsupported argument ] shows this usage info\n");
+            Console.WriteLine("examples");
+            Console.WriteLine("  " + asmName + " ");
+            Console.WriteLine("  " + asmName + " /l");
+            Console.WriteLine("  " + asmName + " /r");
+            Console.WriteLine("");
         }
     }
 }
