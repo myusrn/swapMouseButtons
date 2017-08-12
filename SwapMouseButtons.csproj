@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EmbeddedResource Include="App.manifest" />
     <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
