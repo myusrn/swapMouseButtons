@@ -42,6 +42,10 @@ shortcut link or non-elevated command prompt.
 
 4. "windows user access control elevation request api" -> 
 - https://stackoverflow.com/questions/17533/request-windows-vista-uac-elevation-if-path-is-protected
+- https://www.codeproject.com/Articles/19165/Vista-UAC-The-Definitive-Guide
+
+5. "trustInfo security requestedPrivileges requestedExecutionLevel requireAdministrator" ->
+- https://stackoverflow.com/questions/6226976/how-to-add-manifest-requestedprivileges-info-into-delphi-project
  
-5. "which open source license should i use" -> 
+6. "which open source license should i use" -> 
 - https://whichopensourcelicense.com/  
