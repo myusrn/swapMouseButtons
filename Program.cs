@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -79,6 +80,7 @@ namespace SwapMouseButton
                 if (key is null) throw new ApplicationException("unable to open mouse settings registry key");
                 if (mouseButtonsSetting == MouseButtonsSetting.LeftHanded)
                 {
+                    Console.WriteLine("swapping mouse buttons settings to left handed");
                     SwapMouseButton(true); // change runtime setting
                     try { key.SetValue("SwapMouseButtons", "1", RegistryValueKind.String); } // change persisted setting
                     catch (UnauthorizedAccessException) { Console.WriteLine(
@@ -86,6 +88,7 @@ namespace SwapMouseButton
                 }
                 else /* (mouseButtonsSetting == MouseButtonSettings.RightHanded) */
                 {
+                    Console.WriteLine("swapping mouse buttons settings to right handed");
                     SwapMouseButton(false); // change runtime setting
                     try { key.SetValue("SwapMouseButtons", "0", RegistryValueKind.String); } // change persisted setting
                     catch (UnauthorizedAccessException) { Console.WriteLine(
@@ -98,9 +101,13 @@ namespace SwapMouseButton
         {
             var asm = Assembly.GetExecutingAssembly();
             var asmVersion = asm.GetName().Version.ToString();
-            //var asmName = Regex.Match(Environment.CommandLine, @"[^\\]+(?:\.exe)", RegexOptions.IgnoreCase).Value;
-            var asmName = Regex.Match(Environment.CommandLine, @"(?<fname>[^\\]+)(?<ext>\.exe)", RegexOptions.IgnoreCase).
-                Groups["fname"].Value;
+            // see https://stackoverflow.com/questions/45652783/regex-including-what-is-supposed-to-be-non-capturing-group-in-result
+            // for details on differences between @"[^\\]+(?:\.exe)" vs @"[^\\]+(?=\.exe)" vs @"([^\\]+)\.exe" matching
+            //var asmName = Regex.Match(Environment.CommandLine, @"[^\\]+(?:\.exe)", RegexOptions.IgnoreCase).Value; // ".exe" included
+            var asmName = Regex.Match(Environment.CommandLine, @"[^\\]+(?=\.exe)", RegexOptions.IgnoreCase).Value;
+            //var asmName = Regex.Match(Environment.CommandLine, @"([^\\]+)\.exe", RegexOptions.IgnoreCase).Groups[1].Value; 
+            //var asmName = Regex.Match(Environment.CommandLine, @"(?<fnm>[^\\]+)(?<ext>\.exe)", RegexOptions.IgnoreCase).Groups["fnm"].Value;
+            //var asmName = Path.GetFileName(Environment.CommandLine); // "Illegal characters in path." unless outer quotes and args stripped
 
             const string Status = "in progress"; const string Version = "12aug17";
             //Console.WriteLine("\nstatus = " + Status + ", version = " + Version + "\n");  
