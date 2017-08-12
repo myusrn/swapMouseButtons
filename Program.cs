@@ -98,7 +98,9 @@ namespace SwapMouseButton
         {
             var asm = Assembly.GetExecutingAssembly();
             var asmVersion = asm.GetName().Version.ToString();
-            var asmName = Regex.Match(Environment.CommandLine, @"[^\\]+(?:\.exe)", RegexOptions.IgnoreCase).Value;
+            //var asmName = Regex.Match(Environment.CommandLine, @"[^\\]+(?:\.exe)", RegexOptions.IgnoreCase).Value;
+            var asmName = Regex.Match(Environment.CommandLine, @"(?<fname>[^\\]+)(?<ext>\.exe)", RegexOptions.IgnoreCase).
+                Groups["fname"].Value;
 
             const string Status = "in progress"; const string Version = "12aug17";
             //Console.WriteLine("\nstatus = " + Status + ", version = " + Version + "\n");  
