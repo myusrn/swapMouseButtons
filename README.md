@@ -21,12 +21,25 @@ not change the registry setting. So that needs to be modified as well otherwise
 the next time you open and close mouse settings control panel, main.cpl, the
 setting will revert to what the registry setting is configured to be.
 
-TODO: Figure out how to popup the "User Access Control" dialog that you see 
-when you execute regedit.exe from a non-elevated command prompt. This will 
-allow swap of mouse buttons setting to be persisted when executed from desktop 
-shortcut link or non-elevated command prompt.  Tried adding an App.manifest
-file with declarative settings and configuring it to build as an embedded
-resource but that appeared to make no difference.
+Testing showed that for user logged in who was member of administrators
+group only needed to open registry key with writable enabled and only
+needed user access control app.manifest run elevanted permissions, which
+generates yes/no popup, to address use of utility by user who is not 
+member of administrators security group. So leaving that behavior out 
+for usability purposes, i.e. so cli utility operates w/o any popups.
+
+"addressing registry UnauthorizedAccessException" -> 
+https://stackoverflow.com/questions/10339990/c-sharp-set-registry-value-throws-unauthorizedaccessexception ->
+https://stackoverflow.com/questions/2732126/deletesubkey-unauthorizedaccessexception | OpenSubKey(keyPath, true)) // open writable
+
+"windows uac elevation request api" -> https://stackoverflow.com/questions/6418791/requesting-administrator-privileges-at-run-time | 
+https://msdn.microsoft.com/en-us/library/bb756929.aspx step 6: create and embed an application manifest (uac) | managed code | 
+enable following post-build event command line as it seems using build action = "embedded resource" or "resource" doesn't do it
+"%programfiles(x86)%\Windows Kits\10\bin\10.0.15063.0\x86\mt.exe" -manifest "$(ProjectDir)App.manifest" 
+-outputresource:"$(TargetDir)$(TargetName).exe;#1"
+https://stackoverflow.com/questions/17533/request-windows-vista-uac-elevation-if-path-is-protected | uac sample -> 
+https://msdn.microsoft.com/en-us/library/aa970890.aspx
+
 &nbsp;  
 
 ---

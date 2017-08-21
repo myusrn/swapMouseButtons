@@ -5,13 +5,8 @@
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
    <security>
      <requestedPrivileges>  <!-- enable elevated execution level -->
-      <requestedExecutionLevel level="requireAdministrator" uiAccess="true" />
+      <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
      </requestedPrivileges>
    </security>
   </trustInfo>
-  <dependency>
-   <dependentAssembly>
-     <!--<assemblyIdentity type="win32" name="Microsoft.Windows.Common-Controls" version="6.0.0.0" publicKeyToken="6595b64144ccf1df" language="*" processorArchitecture="*"/>-->
-   </dependentAssembly>
-  </dependency>
 </assembly>

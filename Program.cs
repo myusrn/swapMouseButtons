@@ -75,7 +75,7 @@ namespace SwapMouseButton
         /// <returns>value indicating whether right or left handed setting is in place</returns>
         static void SetMouseButtonsSetting(MouseButtonsSetting mouseButtonsSetting)
         {
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey("Control Panel\\Mouse"))
+            using (RegistryKey key = Registry.CurrentUser.OpenSubKey("Control Panel\\Mouse", true)) // open writable
             {
                 if (key is null) throw new ApplicationException("unable to open mouse settings registry key");
                 if (mouseButtonsSetting == MouseButtonsSetting.LeftHanded)
@@ -109,7 +109,7 @@ namespace SwapMouseButton
             //var asmName = Regex.Match(Environment.CommandLine, @"(?<fnm>[^\\]+)(?<ext>\.exe)", RegexOptions.IgnoreCase).Groups["fnm"].Value;
             //var asmName = Path.GetFileName(Environment.CommandLine); // "Illegal characters in path." unless outer quotes and args stripped
 
-            const string Status = "in progress"; const string Version = "12aug17";
+            /* const string Status = "in progress"; */ const string Version = "12aug17";
             //Console.WriteLine("\nstatus = " + Status + ", version = " + Version + "\n");  
             Console.WriteLine("\nversion = " + Version + "\n");
             Console.WriteLine("description");

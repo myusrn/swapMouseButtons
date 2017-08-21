@@ -47,9 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EmbeddedResource Include="App.manifest" />
+    <None Include="App.manifest" />
     <None Include="LICENSE" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rem "%25programfiles(x86)%25\Windows Kits\10\bin\10.0.15063.0\x86\mt.exe" -manifest "$(ProjectDir)App.manifest" -outputresource:"$(TargetPath);#1"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
