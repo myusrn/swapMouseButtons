@@ -27,7 +27,7 @@ namespace SwapMouseButton
         {
             //Console.WriteLine("Hello World!");
 
-            if (args.Length > 0 && (Regex.IsMatch(args[0], @"[-/][\?h]") || Regex.IsMatch(args[0], @"/[^lr]")))
+            if (args.Length > 0 && (Regex.IsMatch(args[0], @"[-/][\?h]") || Regex.IsMatch(args[0], @"/[^lrc]")))
             {
                 // pattern @"[-/][\?h]" can also be written as @"(-|/)(\?|h)"
                 ShowUsage();
@@ -41,6 +41,13 @@ namespace SwapMouseButton
             {
                 // set to right handed regardless of current persisted and runtime state
                 SetMouseButtonsSetting(MouseButtonsSetting.RightHanded);
+            }
+            else if (args.Length > 0 && String.Compare(args[0], "/c", true) == 0)
+            {
+                // get and display current persisted setting, no runtime setting lookup option
+                var currentSetting = GetMouseButtonsSetting();
+                if (currentSetting == MouseButtonsSetting.RightHanded) Console.WriteLine("the currently persisted setting is right handed");
+                else /* (currentSetting == MouseButtonSettings.LeftHanded) */ Console.WriteLine("the currently persisted setting is left handed");
             }
             else // lookup current persisted setting, no runtime setting lookup option, and swap it
             {
@@ -115,11 +122,12 @@ namespace SwapMouseButton
             Console.WriteLine("description");
             Console.WriteLine("  command line utility to switch primary and secondary mouse buttons\n");
             Console.WriteLine("usage");
-            Console.WriteLine("  " + asmName + " [/l | /r | /h]\n");
+            Console.WriteLine("  " + asmName + " [/l | /r | /c | /h]\n");
             Console.WriteLine("where");
             Console.WriteLine("     = no arguments swaps whatever currently persisted setting is");
             Console.WriteLine("  /l = switches to left handed regardless of current setting");
             Console.WriteLine("  /r = switches to right handed regardless of current setting");
+            Console.WriteLine("  /c = displays currently persisted mouse setting");
             Console.WriteLine("  /h = [ | /? | unsupported argument ] shows this usage info\n");
             Console.WriteLine("examples");
             Console.WriteLine("  " + asmName + " ");
